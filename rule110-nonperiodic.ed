@@ -4,7 +4,7 @@ $a
 .
 -t.
 # Set up the cells past the edges. In this case, they are always 0.
-s/.*/0&0
+s/.*/0&0/
 # Split the input into multiple lines, one character per line.
 s/./&\
 /g
