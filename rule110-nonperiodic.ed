@@ -1,17 +1,23 @@
+# Copy the input to a scratch space at the end of the file.
 $a
 
 .
 -t.
+# Set up the cells past the edges. In this case, they are always 0.
 s/.*/0&0
+# Split the input into multiple lines, one character per line.
 s/./&\
 /g
 d
+# For each set of 3 lines, perform Rule 110.
 ?^$?+,$--g/^/+,++t.\
 --,.j\
 s/\(111\)\|\(100\)\|\(000\)/0/\
 s/\(110\)\|\(101\)\|\(011\)\|\(010\)\|\(001\)/1/
 $-,$d
+# Combine the result as the next line of input.
 ?^$?,$jp
+# Self-modify and recurse. Use `exec` to reduce the number of processes.
 w
 !exec ed % < %
 q
