@@ -16,7 +16,7 @@ d
 s/\(111\)\|\(100\)\|\(000\)/0/\
 s/\(110\)\|\(101\)\|\(011\)\|\(010\)\|\(001\)/1/
 $-,$d
-# Combine the result as the next line of input.
+# Combine the result as the next line of input and print it.
 ?^$?,$jp
 # Self-modify and recurse. Use `exec` to reduce the number of processes.
 w
