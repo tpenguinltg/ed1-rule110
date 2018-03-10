@@ -1,24 +1,24 @@
-# Copy the input to a scratch space at the end of the file.
 $a
 
 .
 -t.
-# Set up the cells past the edges. In this case, the edges wrap around.
 .g/^\(.\).*\(.\)$/s//\2&\1/
 .g/^.$/s//&&&/
-# Split the input into multiple lines, one character per line.
 s/./&\
 /g
 d
-# For each set of 3 lines, perform Rule 110.
 ?^$?+,$-2g/^/+,+2t.\
 -2,.j\
-s/\(111\)\|\(100\)\|\(000\)/0/\
-s/\(110\)\|\(101\)\|\(011\)\|\(010\)\|\(001\)/1/
+s/111/0/\
+s/110/1/\
+s/101/1/\
+s/100/0/\
+s/011/1/\
+s/010/1/\
+s/001/1/\
+s/000/0/
 $-,$d
-# Combine the result as the next line of input and print it.
 ?^$?,$jp
-# Self-modify and recurse. Use `exec` to reduce the number of processes.
 w
 !exec ed % < %
 q
