@@ -20,7 +20,7 @@ s/000/0/
 $-,$d
 ?^$?,$jp
 w
-!exec ed % < %
+!exec ed '%' < '%'
 q
 
 # DATA
