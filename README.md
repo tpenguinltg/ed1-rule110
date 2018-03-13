@@ -39,3 +39,7 @@ For a nicer view, consider running the script through `sed` to change the `0` an
 ```sh
 $ sed 's/0/ /g;s/1/#/g' rule110.ed
 ```
+
+## License
+
+MIT. See the [LICENSE](./LICENSE) file for details.
