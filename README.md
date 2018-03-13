@@ -1,9 +1,10 @@
 # ed(1) Rule 110 Simulation
 
-This [ed(1)][] script simulates [Rule 110][], proving that ed(1) is Turing-complete.
+This [ed(1)][] script simulates [Rule 110][], proving that ed(1) is Turing-complete. Read the [blog post][] for a full explanation.
 
 [ed(1)]: https://en.wikipedia.org/wiki/Ed_%28text_editor%29
 [Rule 110]: https://en.wikipedia.org/wiki/Rule_110
+[blog post]: https://nixwindows.wordpress.com/2018/03/13/ed1-is-turing-complete/
 
 ## Overview
 
