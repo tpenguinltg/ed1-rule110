@@ -1,0 +1,8 @@
+H
+/^# CODE$/-ka
+/^# CODE$/kb
+,t'a
+'a,'bs/^\.\.*$/.&/
+g/^# CODE$/d
+w
+q

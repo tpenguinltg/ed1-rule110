@@ -1,6 +1,12 @@
 # ed(1) Rule 110 Simulation
 
-This [ed(1)][] script simulates [Rule 110][], proving that ed(1) is Turing-complete. Read the [blog post][] for a full explanation.
+This [ed(1)][] script simulates [Rule 110][], proving that ed(1) is
+Turing-complete.
+
+*The old self-modifying version, along with its README, can be found in
+the [`selfmod`](./selfmod) directory. There is a [blog post][] that
+provides a full explanation for this self-modifying version. This new
+version is built on the same concepts.*
 
 [ed(1)]: https://en.wikipedia.org/wiki/Ed_%28text_editor%29
 [Rule 110]: https://en.wikipedia.org/wiki/Rule_110
@@ -8,37 +14,64 @@ This [ed(1)][] script simulates [Rule 110][], proving that ed(1) is Turing-compl
 
 ## Overview
 
-There are two parts to the script: the code part and the data part.
-The code part is what gets executed by `ed`. It ends with the `q` command, after which point the data part starts.
-The data part is marked by the comment `# DATA` for convenience.
+The simulation is run on a data file whose last line is the input. This
+file gets loaded into `ed`'s buffer. Unlike the old version, the script
+is standalone and the data is not embedded into the script.
 
-The rule is implemented through substitutions.
+The Rule is implemented using substitutions.
 
-Recursion is achieved by using `!` to invoke another instance of `ed` on the script. If you do not consider this to be valid, then this script does not prove Turing-completeness.
+The script is a [quine][] that writes itself to the beginning of the
+buffer, partitioning the buffer into a code section and a data section.
+Recursion is achieved by writing the code section to the stdin of an
+invocation of `ed` using the `w` command. To pass data between recursive
+calls, the data section is written to the data file before the recursive
+call is done. If you do not consider using `!` to invoke another
+instance of `ed`, then this script does not prove Turing-completeness.
 
-To save each iteration of the simulation between recursive calls, the script modifies itself before doing the recursive call.
+To simplify writing the script, the full quine, `rule110.ed`, is built
+from the half-quine in `rule110.proto.ed`. Naturally, the build script,
+`build.ed`, is also written as an `ed` script.
+
+[quine]: https://github.com/tpenguinltg/ed1-quine
+
+## Building
+
+Run `make`:
+
+```sh
+$ make
+```
+
+This will take `rule110.proto.ed` and build the full script, `rule110.ed`.
 
 ## Running
 
-The simulation uses the last line of the file as input.
-Apart from the terminal newline, it must contain only `0`s and `1`s. It can be as wide as you want, but it must be at least one character wide.
-
-There are two versions of the script: `rule110.ed`, whose edges "wrap around", and `rule110-nonperiodic.ed`, whose cells past the edges are always 0.
-
-After initializing, run the simulation by invoking `ed` on the script and feeding the script into stdin:
+To run the simulation on the data file `cells.dat`, call `ed` on the
+file, feeding the script through stdin:
 
 ```sh
-$ ed rule110.ed < rule110.ed
+$ ed -s cells.dat < rule110.ed; wait
 ```
 
-The simulation will not terminate automatically, so you will have to terminate it manually using `^C` (possibly multiple times due to race conditions) or `kill`/`killall`/`pkill`.
+The simulation will not terminate automatically, so you will have to
+terminate it manually using `^C` or `kill`/`killall`/`pkill`. Having
+`wait` at the end is not strictly necessary, but it keeps your prompt
+from appearing until all of the child processes spawned by `ed` have
+died.
 
-The results of the simulation will be in the data part of the script.
+The data file (`cells.dat` in this example, but the name does not matter
+as long as it does not contain a `'`) should contain the input on the
+last line. Apart from the terminal newline, it must contain only `0`s
+and `1`s. The input line can be as wide as you want, but it must have at
+least one character (apart from the newline).
 
-For a nicer view, consider running the script through `sed` to change the `0` and `1` characters:
+The results of the simulation will be written back to the data file.
+
+For a nicer view of the results, consider running the data file through
+`sed` to change the `0` and `1` characters:
 
 ```sh
-$ sed 's/0/ /g;s/1/#/g' rule110.ed
+$ sed 's/0/ /g;s/1/#/g' cells.dat
 ```
 
 ## License
