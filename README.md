@@ -53,6 +53,13 @@ file, feeding the script through stdin:
 $ ed -s cells.dat < rule110.ed; wait
 ```
 
+For convenience, the above invocation is also available as the `run` make
+target, so you may alternatively run it using `make`:
+
+```sh
+$ make run
+```
+
 The simulation will not terminate automatically, so you will have to
 terminate it manually using `^C` or `kill`/`killall`/`pkill`. Having
 `wait` at the end is not strictly necessary, but it keeps your prompt
@@ -63,7 +70,9 @@ The data file (`cells.dat` in this example, but the name does not matter
 as long as it does not contain a `'`) should contain the input on the
 last line. Apart from the terminal newline, it must contain only `0`s
 and `1`s. The input line can be as wide as you want, but it must have at
-least one character (apart from the newline).
+least one character (apart from the newline). **Do not run this script on
+a file with invalid data**, or else you'll have to hunt down a stray
+`ed` process.
 
 The results of the simulation will be written back to the data file.
 
